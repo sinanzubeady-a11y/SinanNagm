@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل إسطنبول الشامل</title>
+    <!-- خط الاستايل -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS للخريطة -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: #f4f7f6; color: #333; }
+        header { background: #004d40; color: white; padding: 20px; text-align: center; }
+        .container { max-width: 800px; margin: 20px auto; padding: 15px; }
+        .card { background: white; padding: 20px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h2 { color: #004d40; margin-bottom: 10px; }
+        #map { height: 350px; border-radius: 10px; margin-top: 10px; }
+        .btn { background: #00796b; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; width: 100%; }
+        .btn:hover { background: #004d40; }
+        footer { text-align: center; padding: 20px; background: #00251a; color: white; margin-top: 30px; }
+        .whatsapp-btn { display: inline-block; background: #25d366; color: white; padding: 8px 15px; border-radius: 20px; text-decoration: none; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>دليل إسطنبول السياحي</h1>
+        <p>اكتشف معالم إسطنبول ووسائل النقل الذكية</p>
+    </header>
+
+    <div class="container">
+        <!-- قسم خريطة إسطنبول -->
+        <div class="card">
+            <h2>خريطة إسطنبول التفاعلية والمواقع القريبة</h2>
+            <p>تعرف على موقعك الحالي وأهم محطات المترو والمعالم السياحية.</p>
+            <div id="map"></div>
+            <button class="btn" onclick="getLocation()">تحديث موقعي الحالي</button>
+        </div>
+
+        <!-- قسم التنبيهات الذكية -->
+        <div class="card">
+            <h2>نظام التنبيه الذكي للمحطات</h2>
+            <p>احصل على تنبيه قبل الوصول إلى محطتك بـ دقيقة واحدة.</p>
+            <button class="btn" onclick="alert('تم تفعيل نظام التنبيه للمحطات القريبة بنجاح!')">تفعيل التنبيه</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة © 2026 - دليل إسطنبول الشامل</p>
+        <p style="margin-top: 10px; font-weight: bold;">WEB DEVELOPER: سنان السلطاني</p>
+        <a href="https://wa.me/9647759099295" class="whatsapp-btn" target="_blank">تواصل عبر واتساب: 07759099295</a>
+    </footer>
+
+    <!-- Leaflet JS للخريطة -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // إعداد الخريطة في إسطنبول
+        var map = L.map('map').setView([41.0082, 28.9784], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        var marker = L.marker([41.0082, 28.9784]).addTo(map)
+            .bindPopup('<b>إسطنبول</b> - أنت هنا').openPopup();
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    map.setView([lat, lon], 15);
+                    marker.setLatLng([lat, lon]).bindPopup('موقعك الحالي').openPopup();
+                }, function(error) {
+                    alert('يرجى السماح بالوصول إلى الموقع الجغرافي.');
+                });
+            } else {
+                alert("المتصفح لا يدعم تحديد الموقع.");
+            }
+        }
+    </script>
+</body>
+</html>
